@@ -1,0 +1,464 @@
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0; font-family: var(--font-sans); }
+  
+  .report-container {
+    background: var(--surface-1);
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .report-header {
+    background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+    color: white;
+    padding: 2.5rem;
+    text-align: center;
+  }
+  
+  .report-header h1 {
+    margin: 0 0 0.5rem;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  .report-header p {
+    margin: 0;
+    opacity: 0.95;
+    font-size: 14px;
+  }
+  
+  .report-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: var(--surface-2);
+    border-bottom: 0.5px solid var(--border);
+  }
+  
+  .meta-item {
+    text-align: center;
+  }
+  
+  .meta-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .meta-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  .challenges-section {
+    padding: 2rem;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #3B82F6;
+  }
+  
+  .challenge-block {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .challenge-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  
+  .challenge-icon {
+    font-size: 24px;
+  }
+  
+  .challenge-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  
+  .difficulty-badge {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .difficulty-easy {
+    background: #D1FAE5;
+    color: #047857;
+  }
+  
+  .difficulty-medium {
+    background: #FEF3C7;
+    color: #B45309;
+  }
+  
+  .difficulty-hard {
+    background: #FECACA;
+    color: #991B1B;
+  }
+  
+  .challenge-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--surface-1);
+    border-radius: 8px;
+    border-left: 3px solid #06B6D4;
+  }
+  
+  .challenge-meta-line {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 13px;
+  }
+  
+  .meta-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+  }
+  
+  .meta-stat-value {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  .solution-block {
+    background: var(--surface-1);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .solution-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .code-block {
+    background: #0F172A;
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    color: #E2E8F0;
+  }
+  
+  .code-line {
+    margin: 0;
+  }
+  
+  .keyword { color: #7F77DD; }
+  .string { color: #1d9e75; }
+  .function { color: #378add; }
+  .comment { color: #6B7280; opacity: 0.8; }
+  
+  .solution-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .stat-card {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .stat-card-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-card-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #3B82F6;
+  }
+  
+  .footer {
+    padding: 2rem;
+    background: var(--surface-1);
+    border-top: 0.5px solid var(--border);
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 1.5rem;
+    justify-content: center;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 0.5px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 200ms ease-out;
+  }
+  
+  button:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-1);
+  }
+  
+  button.primary {
+    background: #3B82F6;
+    color: white;
+    border-color: #3B82F6;
+  }
+  
+  button.primary:hover {
+    background: #1E40AF;
+    border-color: #1E40AF;
+  }
+</style>
+
+<div class="report-container">
+  <!-- Header -->
+  <div class="report-header">
+    <h1>Challenge Completion Report</h1>
+    <p>Verified solutions and achievements for your portfolio</p>
+  </div>
+  
+  <!-- Meta Info -->
+  <div class="report-meta">
+    <div class="meta-item">
+      <div class="meta-label">Challenges Completed</div>
+      <div class="meta-value">6</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Total Points Earned</div>
+      <div class="meta-value">48</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Report Generated</div>
+      <div class="meta-value" style="font-size: 13px; font-weight: 500;">Jan 15, 2025</div>
+    </div>
+  </div>
+  
+  <!-- Challenges Section -->
+  <div class="challenges-section">
+    <h2 class="section-title">Your Solutions</h2>
+    
+    <!-- Challenge 1 -->
+    <div class="challenge-block">
+      <div class="challenge-header">
+        <span class="challenge-icon">⚡</span>
+        <h3 class="challenge-title">Build a Secure Login Page</h3>
+        <span class="difficulty-badge difficulty-medium">Medium</span>
+      </div>
+      
+      <div class="challenge-description">
+        Create a responsive login form with email validation, password strength indicator, and "forgot password" link. Must be mobile-friendly with proper security practices.
+      </div>
+      
+      <div class="challenge-meta-line">
+        <div class="meta-stat">
+          <span>🎯</span>
+          <span class="meta-stat-value">10</span>
+          <span>points</span>
+        </div>
+        <div class="meta-stat">
+          <span>⏱️</span>
+          <span class="meta-stat-value">28 mins</span>
+        </div>
+        <div class="meta-stat">
+          <span>✅</span>
+          <span class="meta-stat-value">First attempt</span>
+        </div>
+      </div>
+      
+      <div class="solution-block">
+        <div class="solution-label">Your Solution</div>
+        <div class="code-block">
+<pre class="code-line"><span class="keyword">function</span> <span class="function">LoginForm</span>() {</pre>
+<pre class="code-line">  <span class="keyword">const</span> [email, setEmail] = <span class="function">useState</span>(<span class="string">''</span>);</pre>
+<pre class="code-line">  <span class="keyword">const</span> [password, setPassword] = <span class="function">useState</span>(<span class="string">''</span>);</pre>
+<pre class="code-line"></pre>
+<pre class="code-line">  <span class="keyword">const</span> <span class="function">handleSubmit</span> = (e) => {</pre>
+<pre class="code-line">    e.<span class="function">preventDefault</span>();</pre>
+<pre class="code-line">    <span class="comment">// Validate email and password</span></pre>
+<pre class="code-line">    <span class="keyword">if</span> (!email || !password) <span class="keyword">return</span>;</pre>
+<pre class="code-line">    <span class="comment">// Submit to backend</span></pre>
+<pre class="code-line">  };</pre>
+<pre class="code-line"></pre>
+<pre class="code-line">  <span class="keyword">return</span> &lt;LoginUI onSubmit={handleSubmit} /&gt;;</pre>
+<pre class="code-line">}</pre>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Challenge 2 -->
+    <div class="challenge-block">
+      <div class="challenge-header">
+        <span class="challenge-icon">💻</span>
+        <h3 class="challenge-title">Implement Array Reverse Algorithm</h3>
+        <span class="difficulty-badge difficulty-easy">Easy</span>
+      </div>
+      
+      <div class="challenge-description">
+        Write an efficient function that reverses an array without using built-in reverse methods. Time complexity should be O(n) and space O(1).
+      </div>
+      
+      <div class="challenge-meta-line">
+        <div class="meta-stat">
+          <span>🎯</span>
+          <span class="meta-stat-value">8</span>
+          <span>points</span>
+        </div>
+        <div class="meta-stat">
+          <span>⏱️</span>
+          <span class="meta-stat-value">12 mins</span>
+        </div>
+        <div class="meta-stat">
+          <span>✅</span>
+          <span class="meta-stat-value">First attempt</span>
+        </div>
+      </div>
+      
+      <div class="solution-block">
+        <div class="solution-label">Your Solution</div>
+        <div class="code-block">
+<pre class="code-line"><span class="keyword">function</span> <span class="function">reverseArray</span>(arr) {</pre>
+<pre class="code-line">  <span class="keyword">let</span> left = 0, right = arr.length - 1;</pre>
+<pre class="code-line">  <span class="keyword">while</span> (left &lt; right) {</pre>
+<pre class="code-line">    [arr[left], arr[right]] = [arr[right], arr[left]];</pre>
+<pre class="code-line">    left++;</pre>
+<pre class="code-line">    right--;</pre>
+<pre class="code-line">  }</pre>
+<pre class="code-line">  <span class="keyword">return</span> arr;</pre>
+<pre class="code-line">}</pre>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Challenge 3 -->
+    <div class="challenge-block">
+      <div class="challenge-header">
+        <span class="challenge-icon">🔒</span>
+        <h3 class="challenge-title">Find SQL Injection Vulnerability</h3>
+        <span class="difficulty-badge difficulty-hard">Hard</span>
+      </div>
+      
+      <div class="challenge-description">
+        Identify and fix the SQL injection vulnerability in the provided code snippet. Explain your approach and implement the secure version using parameterized queries.
+      </div>
+      
+      <div class="challenge-meta-line">
+        <div class="meta-stat">
+          <span>🎯</span>
+          <span class="meta-stat-value">15</span>
+          <span>points</span>
+        </div>
+        <div class="meta-stat">
+          <span>⏱️</span>
+          <span class="meta-stat-value">35 mins</span>
+        </div>
+        <div class="meta-stat">
+          <span>✅</span>
+          <span class="meta-stat-value">Second attempt</span>
+        </div>
+      </div>
+      
+      <div class="solution-block">
+        <div class="solution-label">Your Explanation</div>
+        <div class="solution-text">The vulnerability was in using string concatenation for user input in SQL queries. This allows attackers to inject malicious SQL code.
+
+Fixed by using parameterized queries with prepared statements, which separate SQL code from data. This prevents injection attacks by treating user input as data, not executable code.
+
+I used parameterized queries with placeholders (?) and passed user input separately to the database driver, ensuring the input is properly escaped and treated as literal values.</div>
+      </div>
+    </div>
+    
+    <!-- Stats Summary -->
+    <div style="margin-top: 2rem;">
+      <h2 class="section-title">Your Performance</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Avg. Time</div>
+          <div class="stat-card-value">25 min</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Success Rate</div>
+          <div class="stat-card-value">83%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Hints Used</div>
+          <div class="stat-card-value">4</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Streak</div>
+          <div class="stat-card-value">5 days</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer with Actions -->
+  <div class="footer">
+    <p style="margin: 0 0 1rem;">Generated from Smart Sync - Challenge Completion System</p>
+    <div class="button-group">
+      <button onclick="window.print()">
+        <i class="ti ti-printer" style="margin-right: 6px;"></i>Print PDF
+      </button>
+      <button class="primary" onclick="alert('Downloaded!')">
+        <i class="ti ti-download" style="margin-right: 6px;"></i>Download Report
+      </button>
+    </div>
+  </div>
+</div>
