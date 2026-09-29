@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  color-scheme: light;
+}
+
+body {
+  color: #0F172A;
+  background: #F8FAFC;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #0F172A;
+}
+
+
+/* For all interactive elements */
+a, button, .interactive {
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* For colors only */
+.transition-colors {
+  transition: color 150ms ease-in-out;
+}
+/* For shadows */
+.transition-shadow {
+  transition: box-shadow 150ms ease-in-out;
+}
+/* For transforms */
+.transition-transform {
+  transition: transform 150ms ease-in-out;
+}
+
+/* Hover effects classes */
+button:hover, .interactive:hover {
+  transform: translateY(-2px);
+}
+button:active, .interactive:active {
+  transform: translateY(0);
+}
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+.hover-scale-lg:hover {
+  transform: scale(1.05);
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+.hover-shadow:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.card-base {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #0F172A;
+}
+.card-base:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Button Overrides */
+button[data-color="primary"]:hover {
+  background-color: #1E40AF !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+button[data-color="success"]:hover {
+  background-color: #059669 !important;
+}
+button[data-color="warning"]:hover {
+  background-color: #D97706 !important;
+}
+button[data-color="danger"]:hover {
+  background-color: #DC2626 !important;
+}
+
+/* Status Badges */
+.badge-public {
+  background-color: #D1FAE5;
+  color: #047857;
+}
+.badge-private {
+  background-color: #FCE7F3;
+  color: #BE185D;
+}
+.badge-pending {
+  background-color: #FEF3C7;
+  color: #B45309;
+}
+.badge-active {
+  background-color: #DBEAFE;
+  color: #0369A1;
+}
+
+/* Links */
+a {
+  color: #3B82F6;
+  text-decoration: none;
+}
+a:visited {
+  color: #7C3AED;
+}
+a:hover {
+  color: #1E40AF;
+}

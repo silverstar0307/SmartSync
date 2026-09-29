@@ -1,0 +1,43 @@
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+
+interface User {
+  id: number
+  email: string
+  username: string
+  college_email?: string
+  profile_photo?: string
+  first_name?: string
+  last_name?: string
+  bio?: string
+  college_name?: string
+  division?: string
+  interests?: string[]
+}
+
+interface AuthState {
+  user: User | null
+  token: string | null
+  isAuthenticated: boolean
+  login: (user: User, token: string) => void
+  logout: () => void
+  updateUser: (user: Partial<User>) => void
+}
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      login: (user, token) => set({ user, token, isAuthenticated: true }),
+      logout: () => set({ user: null, token: null, isAuthenticated: false }),
+      updateUser: (updatedUser) => set((state) => ({
+        user: state.user ? { ...state.user, ...updatedUser } : null
+      }))
+    }),
+    {
+      name: 'smart-sync-auth', // name of the item in the storage (must be unique)
+    }
+  )
+)
