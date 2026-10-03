@@ -5,6 +5,16 @@ const nextConfig: NextConfig = {
   experimental: {
     swcPlugins: [],
   },
+  async rewrites() {
+    const rawBackendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+    const backendBase = rawBackendUrl.replace(/\/api(\/v1)?\/?$/, '')
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${backendBase}/api/:path*`,
+      },
+    ]
+  },
 };
 
 export default nextConfig;

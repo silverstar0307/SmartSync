@@ -2,12 +2,20 @@ import axios from 'axios'
 import { useAuthStore } from '../store/authSlice'
 
 const getBaseURL = () => {
-  let url = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'
-  url = url.trim().replace(/\/+$/, '')
-  if (!url.endsWith('/api/v1')) {
-    url = `${url}/api/v1`
+  let url = (process.env.NEXT_PUBLIC_API_URL || '').trim()
+
+  if (!url) {
+    return 'http://localhost:5000/api/v1'
   }
-  return url
+
+  url = url.replace(/\/+$/, '')
+  if (url.endsWith('/api/v1')) {
+    return url
+  }
+  if (url.endsWith('/api')) {
+    return `${url}/v1`
+  }
+  return `${url}/api/v1`
 }
 
 const api = axios.create({

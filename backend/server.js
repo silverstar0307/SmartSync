@@ -32,18 +32,23 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/communities', communityRoutes);
-app.use('/api/v1/users', userRoutes);
-app.use('/api/v1/posts', postRoutes);
-app.use('/api/v1/notifications', notificationRoutes);
-app.use('/api/v1/connections', connectionRoutes);
-app.use('/api/v1/recommendations', recommendationRoutes);
+// Routes (supporting both /api/v1 and /api)
+app.use(['/api/v1/auth', '/api/auth'], authRoutes);
+app.use(['/api/v1/communities', '/api/communities'], communityRoutes);
+app.use(['/api/v1/users', '/api/users'], userRoutes);
+app.use(['/api/v1/posts', '/api/posts'], postRoutes);
+app.use(['/api/v1/notifications', '/api/notifications'], notificationRoutes);
+app.use(['/api/v1/connections', '/api/connections'], connectionRoutes);
+app.use(['/api/v1/recommendations', '/api/recommendations'], recommendationRoutes);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// Health check endpoints
+app.get(['/api/health', '/api/v1/health', '/health'], (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Smart Sync Backend is running' });
+});
+
+// JSON 404 Handler for undefined routes
+app.use((req, res, next) => {
+  res.status(404).json({ message: `API route not found: ${req.method} ${req.originalUrl}` });
 });
 
 // Global Error Handler

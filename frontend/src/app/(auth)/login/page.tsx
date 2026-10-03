@@ -44,8 +44,10 @@ export default function LoginPage() {
     } catch (err: any) {
       if (err.response?.data?.message) {
         setError(err.response.data.message)
+      } else if (err.response?.status === 404) {
+        setError('Login endpoint not found (404). Please ensure the backend server is running and NEXT_PUBLIC_API_URL points to your backend API.')
       } else if (err.code === 'ERR_NETWORK' || !err.response) {
-        setError('Cannot connect to backend server. Please verify that the backend API is deployed, running, and NEXT_PUBLIC_API_URL is configured.')
+        setError('Cannot connect to backend server. Please verify that the backend API is running on port 5000 and NEXT_PUBLIC_API_URL is configured.')
       } else {
         setError(err.message || 'Failed to login')
       }
