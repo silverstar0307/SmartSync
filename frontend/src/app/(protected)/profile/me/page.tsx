@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/authSlice'
 import api from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import JoinedCommunitiesBar from '@/components/Profile/JoinedCommunitiesBar'
-import SolutionsSlideBar from '@/components/Profile/SolutionsSlideBar'
+
 import PostsSlideBar from '@/components/Profile/PostsSlideBar'
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1').replace(/\/api\/v1\/?$/, '')
@@ -16,7 +16,7 @@ export default function ProfilePage() {
   const { user, updateUser } = useAuthStore()
   const [profile, setProfile] = useState<any>(null)
   const [userPosts, setUserPosts] = useState<any[]>([])
-  const [userSolutions, setUserSolutions] = useState<any[]>([])
+
   const [userCommunities, setUserCommunities] = useState<any[]>([])
   const [isCommunitiesOpen, setIsCommunitiesOpen] = useState(false)
   const [isLoadingCommunities, setIsLoadingCommunities] = useState(false)
@@ -37,15 +37,13 @@ export default function ProfilePage() {
       if (!user?.id) return
       
       try {
-        const [profileRes, postsRes, solutionsRes, communitiesRes] = await Promise.all([
+        const [profileRes, postsRes, communitiesRes] = await Promise.all([
           api.get(`/users/${user.id}`),
           api.get(`/posts/user/${user.id}`),
-          api.get(`/users/${user.id}/solutions`).catch(() => ({ data: [] })),
           api.get(`/users/${user.id}/communities`).catch(() => ({ data: [] }))
         ])
         setProfile(profileRes.data)
         setUserPosts(postsRes.data || [])
-        setUserSolutions(solutionsRes.data || [])
         setUserCommunities(communitiesRes.data || [])
       } catch (error) {
         console.error('Failed to fetch profile or user data', error)
@@ -389,14 +387,7 @@ export default function ProfilePage() {
         </CardBody>
       </Card>
 
-      {/* 3. SOLUTIONS SLIDER SECTION */}
-      <SolutionsSlideBar 
-        solutions={userSolutions} 
-        isLoading={isLoading} 
-        backendUrl={BACKEND_URL} 
-        isOwnProfile={true} 
-        userProfile={profile}
-      />
+
 
       {/* 4. LINKEDIN-STYLE POSTS HORIZONTAL SLIDESHOW */}
       <PostsSlideBar 

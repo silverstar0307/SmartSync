@@ -17,29 +17,6 @@ export interface InterestCategory {
 
 export const INTEREST_TAXONOMY: InterestCategory[] = [
   {
-    category: 'College Studies',
-    color: 'default',
-    bgClass: 'bg-default-500',
-    domains: [
-      {
-        name: 'First Year',
-        subDomains: ['Group A', 'Group B']
-      },
-      {
-        name: 'Second Year',
-        subDomains: ['CS', 'IT', 'ECE', 'ENTC', 'MECHANICAL', 'CIVIL', 'AIML']
-      },
-      {
-        name: 'Third Year',
-        subDomains: ['CS', 'IT', 'ECE', 'ENTC', 'MECHANICAL', 'CIVIL', 'AIML']
-      },
-      {
-        name: 'Final Year',
-        subDomains: ['CS', 'IT', 'ECE', 'ENTC', 'MECHANICAL', 'CIVIL', 'AIML']
-      }
-    ]
-  },
-  {
     category: 'Tech Activities',
     color: 'secondary',
     bgClass: 'bg-secondary',
@@ -64,10 +41,35 @@ export const INTEREST_TAXONOMY: InterestCategory[] = [
         name: 'AI Learning',
         subDomains: ['Computer vision', 'NLM & LLMs', 'Robotics', 'Logic engines']
       },
-      { name: 'UI/UX Designing' },
       { name: 'Cybersecurity' },
-      { name: 'Graphic Designing' },
       { name: 'Game Development' }
+    ]
+  },
+  {
+    category: 'Trending Skills',
+    color: 'default',
+    bgClass: 'bg-default-500',
+    domains: [
+      {
+        name: 'Cloud Computing',
+        subDomains: ['AWS', 'Azure', 'Google Cloud', 'Docker', 'Kubernetes']
+      },
+      {
+        name: 'Data Science',
+        subDomains: ['Data Analysis', 'Data Engineering', 'Big Data', 'PowerBI']
+      },
+      {
+        name: 'Blockchain & Web3',
+        subDomains: ['Smart Contracts', 'Solidity', 'Ethereum']
+      },
+      {
+        name: 'DevOps & CI/CD',
+        subDomains: ['Jenkins', 'GitOps', 'Terraform']
+      },
+      {
+        name: 'Business & Product',
+        subDomains: ['Product Management', 'Agile', 'Scrum', 'Digital Marketing']
+      }
     ]
   },
   {
@@ -121,56 +123,14 @@ export const INTEREST_TAXONOMY: InterestCategory[] = [
     ]
   },
   {
-    category: 'Social Activities & Content',
+    category: 'Creative & Design',
     color: 'success',
     bgClass: 'bg-success',
     domains: [
-      {
-        name: 'Content Creation',
-        subDomains: ['Writing', 'Video Editing', 'Video Shooting', 'Thumbnail Designing']
-      },
-      { name: 'Public Speaking' },
-      { name: 'Anchoring' },
-      { name: 'Presentations' },
-      { name: 'Communication' },
-      { name: 'NSS' },
-      { name: 'Photography' }
-    ]
-  },
-  {
-    category: 'Extra Curricular',
-    color: 'danger',
-    bgClass: 'bg-danger',
-    domains: [
-      {
-        name: 'Music',
-        subDomains: ['Guitar', 'Tabala', 'Voilene', 'Drums', 'Flutes']
-      },
-      { name: 'Singing' },
-      { name: 'Dancing' },
-      { name: 'Acting' },
-      { name: 'Standup Comedy' },
-      { name: 'Gaming' }
-    ]
-  },
-  {
-    category: 'Sports (Indoor & Outdoor)',
-    color: 'default',
-    bgClass: 'bg-default-500',
-    domains: [
-      {
-        name: 'Fitness',
-        subDomains: ['Calisthenics', 'Powerlifting', 'Diet']
-      },
-      { name: 'Cricket' },
-      { name: 'Volleyball' },
-      { name: 'Football' },
-      { name: 'Basketball' },
-      { name: 'Kabaddi' },
-      { name: 'Running' },
-      { name: 'Table Tennis' },
-      { name: 'Chess' },
-      { name: 'Carrom' }
+      { name: 'UI/UX Designing' },
+      { name: 'Graphic Designing' },
+      { name: '3D Animation & Modeling' },
+      { name: 'Video Editing & Production' }
     ]
   }
 ]

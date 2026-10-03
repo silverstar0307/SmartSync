@@ -6,8 +6,7 @@ import { Card, CardBody, Button, Input, Chip, Avatar, Spinner, Textarea, Modal, 
 import { Search, Users, Send, Info, Plus, Heart, MessageSquare, ArrowLeft, ShieldAlert, Edit, Upload, Sparkles, Check, Paperclip, Smile, FileText, Image, Video, Trophy, CheckSquare, BarChart2, Mic } from 'lucide-react'
 import { useAuthStore } from '@/store/authSlice'
 import api from '@/lib/api'
-import ChallengeModal from '@/components/Challenge/ChallengeModal'
-import ChallengeCard from '@/components/Challenge/ChallengeCard'
+
 
 const BACKEND_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1').replace(/\/api\/v1\/?$/, '')
 
@@ -34,7 +33,7 @@ export default function CommunityDetailPage() {
   const [postTitle, setPostTitle] = useState('')
   const [postContent, setPostContent] = useState('')
   const [isCreatingPost, setIsCreatingPost] = useState(false)
-  const [isChallengeModalOpen, setIsChallengeModalOpen] = useState(false)
+
 
   // Edit Community State
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure()
@@ -442,36 +441,7 @@ export default function CommunityDetailPage() {
             chatMessages.map((msg) => {
               const isOwn = msg.sender_id === user?.id
               
-              if (msg.message_type === 'challenge') {
-                const postForCard = {
-                  id: msg.post_id,
-                  username: msg.sender_username,
-                  profile_photo: msg.sender_photo,
-                  title: msg.post_title,
-                  content: msg.post_content,
-                  challenge_data: msg.challenge_data,
-                  media: msg.post_media,
-                  reply_count: msg.reply_count,
-                  like_count: msg.like_count
-                }
-                
-                return (
-                  <div key={msg.id} className={`flex flex-col w-full my-2 ${isOwn ? 'items-end' : 'items-start'}`}>
-                    <div className="w-[80%] max-w-[500px]">
-                      <ChallengeCard 
-                        post={postForCard} 
-                        communityId={id as string} 
-                        adminId={currentCommunity?.admin_id}
-                        onUpdate={() => {
-                          fetchCommunityPosts()
-                          fetchChatMessages()
-                        }} 
-                      />
-                    </div>
-                  </div>
-                )
-              }
-              
+
               return (
                 <div 
                   key={msg.id} 
@@ -623,14 +593,7 @@ export default function CommunityDetailPage() {
                   >
                     Videos
                   </DropdownItem>
-                  <DropdownItem 
-                    key="challenge" 
-                    startContent={<Trophy size={18} className="text-amber-500" />}
-                    description="Post a challenge"
-                    onClick={() => setIsChallengeModalOpen(true)}
-                  >
-                    Challenge
-                  </DropdownItem>
+
                   <DropdownItem 
                     key="tasks" 
                     startContent={<CheckSquare size={18} className="text-rose-500" />}
@@ -852,18 +815,7 @@ export default function CommunityDetailPage() {
                   </p>
                 ) : (
                   posts.map((post) => (
-                    post.post_type === 'challenge' ? (
-                      <ChallengeCard 
-                        key={post.id} 
-                        post={post} 
-                        communityId={id as string} 
-                        adminId={currentCommunity?.admin_id}
-                        onUpdate={() => {
-                          fetchCommunityPosts()
-                        }} 
-                      />
-                    ) : (
-                      <Card key={post.id} className="border border-divider shadow-none">
+                    <Card key={post.id} className="border border-divider shadow-none">
                         <CardBody className="p-3 gap-2.5">
                           <div className="flex gap-2.5 items-center">
                             <Avatar name={post.username?.charAt(0).toUpperCase()} size="sm" className="bg-secondary/20 text-secondary" />
@@ -895,9 +847,9 @@ export default function CommunityDetailPage() {
                           </div>
                         </CardBody>
                       </Card>
-                    )
-                  ))
-                )}
+                    ))
+                  )
+                }
               </div>
             </div>
 
@@ -967,13 +919,7 @@ export default function CommunityDetailPage() {
         </ModalContent>
       </Modal>
 
-      {/* CHALLENGE MODAL */}
-      <ChallengeModal 
-        isOpen={isChallengeModalOpen} 
-        onClose={() => setIsChallengeModalOpen(false)} 
-        communityId={id as string} 
-        onSuccess={() => fetchCommunityPosts()} 
-      />
+
 
       {/* EDIT COMMUNITY MODAL */}
       <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} placement="center" size="lg">

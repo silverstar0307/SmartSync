@@ -57,7 +57,13 @@ export default function ForgotPasswordPage() {
         router.push('/login')
       }, 2000)
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to change password. Please check your details.')
+      if (err.response?.data?.message) {
+        setError(err.response.data.message)
+      } else if (err.code === 'ERR_NETWORK' || !err.response) {
+        setError('Cannot connect to backend server. Please verify that the backend API is deployed, running, and NEXT_PUBLIC_API_URL is configured.')
+      } else {
+        setError(err.message || 'Failed to change password. Please check your details.')
+      }
     } finally {
       setIsLoading(false)
     }

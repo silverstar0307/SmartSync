@@ -23,7 +23,6 @@ export default function CommunitiesPage() {
   const [description, setDescription] = useState('')
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set([]))
   const [requiresApproval, setRequiresApproval] = useState(false)
-  const [communityPrivacy, setCommunityPrivacy] = useState<'public' | 'private'>('public')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -65,35 +64,22 @@ export default function CommunitiesPage() {
     const tags = Array.from(selectedTags)
 
     try {
-      if (communityPrivacy === 'public') {
-        await api.post('/communities/request', {
-          name,
-          slug,
-          description,
-          tags,
-          requires_approval: requiresApproval
-        })
-        alert('Public community request sent! Please wait for approval.')
-        onClose()
-      } else {
-        const response = await api.post('/communities', {
-          name,
-          slug,
-          description,
-          tags,
-          is_public: false,
-          requires_approval: requiresApproval
-        })
-        router.push(`/communities/${response.data.id}`)
-        onClose()
-      }
+      const response = await api.post('/communities', {
+        name,
+        slug,
+        description,
+        tags,
+        is_public: false, // Default to private
+        requires_approval: requiresApproval
+      })
+      router.push(`/communities/${response.data.id}`)
+      onClose()
       
       // Reset form
       setName('')
       setDescription('')
       setSelectedTags(new Set([]))
       setRequiresApproval(false)
-      setCommunityPrivacy('public')
     } catch (error: any) {
       console.error(error)
       setErrorMessage(error.response?.data?.message || 'Failed to create community.')
@@ -117,8 +103,9 @@ export default function CommunitiesPage() {
     const matchesSearch = c.name.toLowerCase().includes(search.toLowerCase()) || 
       c.description?.toLowerCase().includes(search.toLowerCase())
     if (!matchesSearch) return false
-    if (filterType === 'public') return c.is_public === true
-    if (filterType === 'private') return c.is_public === false
+    
+    // Always filter for private communities only (since public is removed)
+    if (c.is_public === true) return false
     
     if (selectedTag !== 'All') {
       const hasTag = c.tags?.some((t: string) => t.toLowerCase() === selectedTag.toLowerCase())
@@ -152,32 +139,7 @@ export default function CommunitiesPage() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        <Dropdown>
-          <DropdownTrigger>
-            <Button 
-              variant="flat" 
-              startContent={<Filter size={16} />}
-              className="bg-default-100 font-semibold"
-            >
-              {filterType === 'all' ? 'All Communities' : filterType === 'public' ? 'Public Communities' : 'Private Communities'}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu 
-            aria-label="Filter Communities"
-            variant="flat"
-            disallowEmptySelection
-            selectionMode="single"
-            selectedKeys={new Set([filterType])}
-            onSelectionChange={(keys) => {
-              const selected = Array.from(keys)[0] as 'all' | 'public' | 'private'
-              setFilterType(selected)
-            }}
-          >
-            <DropdownItem key="all">All Communities</DropdownItem>
-            <DropdownItem key="public">Public Communities</DropdownItem>
-            <DropdownItem key="private">Private Communities</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+
 
         <Select
           className="max-w-[250px]"
@@ -221,10 +183,10 @@ export default function CommunitiesPage() {
                         <Chip 
                           size="sm" 
                           variant="flat" 
-                          color={community.is_public ? "success" : "danger"}
+                          color="danger"
                           className="text-tiny shrink-0 font-semibold"
                         >
-                          {community.is_public ? "Public" : "Private"}
+                          Private
                         </Chip>
                       </div>
                       <div className="flex items-center text-tiny text-default-500 mt-1">
@@ -302,15 +264,7 @@ export default function CommunitiesPage() {
                   </div>
                 )}
                 
-                <RadioGroup 
-                  label="Community Type" 
-                  orientation="horizontal" 
-                  value={communityPrivacy} 
-                  onValueChange={(val) => setCommunityPrivacy(val as 'public' | 'private')}
-                >
-                  <Radio value="public">Public Community</Radio>
-                  <Radio value="private">Private Community</Radio>
-                </RadioGroup>
+
 
                 <Input
                   label="Community Name"
@@ -350,7 +304,7 @@ export default function CommunitiesPage() {
                   Cancel
                 </Button>
                 <Button color="primary" onClick={() => handleCreateCommunity(onClose)} isLoading={isSubmitting}>
-                  {communityPrivacy === 'public' ? 'Send Request for Community' : 'Create Community'}
+                  Create Community
                 </Button>
               </ModalFooter>
             </>

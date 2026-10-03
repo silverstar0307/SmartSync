@@ -16,7 +16,7 @@ export function Sidebar({ onClose }: SidebarProps) {
   const links = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'Communities', href: '/communities', icon: Users },
-    { name: 'Connections', href: '/connections', icon: MessageSquare },
+    { name: 'AI Rec.', href: '/connections', icon: Compass },
     { name: 'Interests', href: '/interests', icon: Compass },
     { name: 'Notifications', href: '/notifications', icon: Bell },
     { name: 'Profile', href: '/profile/me', icon: UserIcon },
